@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  news:
+    build: docker
+    ports:
+      - "80:80"
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./www:/www
+    environment:
+      - API_KEY
