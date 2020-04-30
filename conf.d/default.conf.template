@@ -1,30 +1,37 @@
 proxy_cache_path /finnhub-cache levels=1:2 keys_zone=finnhub-cache:10m
                  max_size=10g inactive=60m use_temp_path=off;
-
-
 server {
     listen 80;
     resolver 127.0.0.11;
     proxy_cache finnhub-cache;
     proxy_ssl_server_name on;
+    gzip on;
+    gzip_comp_level 5;
+    gzip_min_length 256;
+    gzip_vary on;
+    gzip_types application/javascript application/json text/css;
 
     location ~ ^/api/(.*)$ {
         set $delimiter "";
         if ($is_args) {
             set $delimiter "&";
         }
-        set $args $args${delimiter}token=bq9n70frh5rc96c0qi1g;
+        set $args $args${delimiter}token=${API_KEY};
 
         proxy_pass https://finnhub.io/api/$1$is_args$args;
         proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
     }
 
-    location /exchange {
+    location /news {
         root /www;
         try_files $uri.html $uri/ =404;
     }
 
     location /css {
         alias /www/css;
+    }
+
+    location /js {
+        alias /www/js;
     }
 }

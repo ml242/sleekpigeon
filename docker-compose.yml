@@ -1,17 +1,11 @@
 version: '3.7'
 services:
-  openresty:
-    build: openresty
-    image: openresty/openresty:xenial
+  news:
+    build: docker
     ports:
       - "80:80"
     volumes:
       - ./conf.d:/etc/nginx/conf.d
-      - ./lua:/lua
       - ./www:/www
-#   links:
-#     - memcached
-#  memcached:
-#    image: memcached:latest
-#    ports:
-#      - "11211:11211"
+    environment:
+      - API_KEY
