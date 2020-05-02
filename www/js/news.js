@@ -1,6 +1,7 @@
 (function(){
 
   const createArticle = (article) => (
+   // why not extract the properties from article and then return the html instead of a string?
     `<li class="article">
        <a href="${article.url}">
          <img class="thumbnail" src="${article.image}"/>
@@ -18,6 +19,11 @@
   const getNews = async () => {
     const response = await fetch('/api/v1/news');
     const articles = await response.json();
+
+    // see if there are articles otherwise return null 
+    // prefer const over let 
+    // could just mal the articles and return that array 
+
     let html = "";
     articles.forEach(article => {
       html += createArticle(article);
